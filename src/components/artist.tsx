@@ -1,0 +1,79 @@
+import { createContext, useContext } from 'react';
+import { TArtist } from '@/schemas/spotify';
+import Card, { TCardParagraph, TCardTitle } from '@/components/card';
+
+const ArtistContext = createContext<{
+  artist: TArtist;
+} | null>(null);
+
+export function useArtistContext() {
+  const artistContext = useContext(ArtistContext);
+
+  if (!artistContext) {
+    throw new Error('`useArtistContext` must be used within a `Artist.*`');
+  }
+
+  return artistContext;
+}
+
+export default function Artist({
+  artist,
+  children,
+  ...props
+}: { artist: TArtist } & React.HTMLProps<HTMLLIElement>) {
+  return (
+    <ArtistContext.Provider value={{ artist }}>
+      <Card {...props}>{children}</Card>
+    </ArtistContext.Provider>
+  );
+}
+
+Artist.Name = function ArtistName({ children, ...props }: TCardTitle) {
+  const { artist } = useArtistContext();
+
+  if (!artist) {
+    return null;
+  }
+
+  return (
+    <Card.Title {...props}>
+      <span>{artist.name}</span>
+      {children}
+    </Card.Title>
+  );
+};
+
+Artist.Genres = function ArtistGenres({ children, ...props }: TCardParagraph) {
+  const { artist } = useArtistContext();
+
+  if (!artist) {
+    return null;
+  }
+
+  const genres = artist.genres.join(', ');
+
+  return (
+    <Card.Paragraph {...props}>
+      <span>Genres: {genres || 'n/a'}</span>
+      {children}
+    </Card.Paragraph>
+  );
+};
+
+Artist.Popularity = function ArtistPopularity({
+  children,
+  ...props
+}: TCardParagraph) {
+  const { artist } = useArtistContext();
+
+  if (!artist) {
+    return null;
+  }
+
+  return (
+    <Card.Paragraph {...props}>
+      <span>Popularity: {artist.popularity}</span>
+      {children}
+    </Card.Paragraph>
+  );
+};

@@ -1,0 +1,78 @@
+name: $PROJECT
+
+volumes:
+  redis:
+
+networks:
+  proxy:
+
+services:
+  redis:
+    image: redis:latest
+    env_file: .env
+    volumes:
+      - redis:/data
+    networks:
+      - proxy
+
+  serverless-redis-http:
+    image: hiett/serverless-redis-http:latest
+    env_file: .env
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.serverless-redis-http.rule=Host(`redis.$CNAME`)
+      - traefik.http.routers.serverless-redis-http.entrypoints=web
+      - traefik.http.routers.serverless-redis-http.service=serverless-redis-http
+      - traefik.http.services.serverless-redis-http.loadbalancer.server.port=8079
+    networks:
+      - proxy
+    depends_on:
+      - redis
+
+  next:
+    image: $PROJECT:next
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
+      target: install
+    command: bun run dev
+    env_file: .env
+    volumes:
+      - ./:/app
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.next.rule=Host(`$CNAME`)
+      - traefik.http.routers.next.entrypoints=web
+      - traefik.http.routers.next.service=next
+      - traefik.http.services.next.loadbalancer.server.port=3000
+    networks:
+      - proxy
+    depends_on:
+      - serverless-redis-http
+
+  traefik:
+    image: traefik:latest
+    command:
+      - --api.dashboard=true
+      - --entrypoints.web.address=:80
+      - --providers.docker=true
+      - --providers.docker.network=proxy
+      - --providers.docker.exposedbydefault=false
+    ports:
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.rule=Host(`traefik.$CNAME`)
+      - traefik.http.routers.traefik.entrypoints=web
+      - traefik.http.routers.traefik.service=api@internal
+    networks:
+      proxy:
+        aliases:
+          - $CNAME
+          - redis.$CNAME
+    depends_on:
+      - next
