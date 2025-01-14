@@ -1,7 +1,7 @@
-import useUpdateSearchParams from '@/hooks/use-update-search-params';
+import useDebouncedSearchParams from '@/hooks/use-debounced-search-params';
 
 export default function useSearchParamsFields() {
-  const [searchParams, updateSearchParams] = useUpdateSearchParams();
+  const [searchParams, updateSearchParams] = useDebouncedSearchParams();
   const values = Object.fromEntries(searchParams);
 
   const registerInput = (key: string) => {
