@@ -22,12 +22,17 @@ export default function Albums({
 
         return (
           <Album album={album} key={album.id}>
-            <Album.Title>
-              <MarkFavorite type="albums" item={album} />
-            </Album.Title>
-            <Album.Artist />
-            <Album.Release />
-            <Album.TotalTracks />
+            <Album.Row>
+              <Album.Cover />
+              <Album.Col>
+                <Album.Title>
+                  <MarkFavorite type="albums" item={album} />
+                </Album.Title>
+                <Album.Artist />
+                <Album.Release />
+                <Album.TotalTracks />
+              </Album.Col>
+            </Album.Row>
           </Album>
         );
       })}

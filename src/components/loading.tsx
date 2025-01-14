@@ -1,17 +1,37 @@
 import { Skeleton } from '@/components/ui/skeleton';
+import Group from '@/components/group';
 
-export default function Loading({ count = 5 }) {
-  const loaders = Array.from({ length: count }, () => 0);
+export default function Loading({ groups = 2, placeholders = 2 }) {
+  const loadingGroups = Array.from({ length: groups }, () => 0);
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      {loaders.map((base, baseIndex) => {
-        const key = base + baseIndex;
+    <ol className="flex flex-col gap-2">
+      {loadingGroups.map((base, baseIndex) => {
+        const groupKey = base + baseIndex;
+
+        const loadingPlaceholders = Array.from(
+          { length: placeholders },
+          () => 0,
+        );
 
         return (
-          <Skeleton key={`search-skeleton-${key}`} className="h-12 w-full" />
+          <Group
+            key={`loading-group-${groupKey}`}
+            head={<Skeleton className="h-7 w-1/4" />}
+          >
+            {loadingPlaceholders.map((placeholder, placeholderIndex) => {
+              const placeholderKey = placeholder + placeholderIndex;
+
+              return (
+                <Skeleton
+                  key={`loading-group-${groupKey}-placeholder-${placeholderKey}`}
+                  className="h-40 w-full"
+                />
+              );
+            })}
+          </Group>
         );
       })}
-    </div>
+    </ol>
   );
 }

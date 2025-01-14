@@ -28,6 +28,25 @@ export default function Artist({
   );
 }
 
+Artist.Row = Card.Row;
+Artist.Col = Card.Col;
+
+Artist.Cover = function Cover({ ...props }) {
+  const { artist } = useArtistContext();
+
+  if (!artist) {
+    return null;
+  }
+
+  return (
+    <Card.Cover
+      alt={`Artist ${artist.name} cover`}
+      resolutions={artist.images}
+      {...props}
+    />
+  );
+};
+
 Artist.Name = function ArtistName({ children, ...props }: TCardTitle) {
   const { artist } = useArtistContext();
 

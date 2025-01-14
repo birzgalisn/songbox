@@ -28,6 +28,25 @@ export default function Album({
   );
 }
 
+Album.Row = Card.Row;
+Album.Col = Card.Col;
+
+Album.Cover = function AlbumCover({ ...props }) {
+  const { album } = useAlbumContext();
+
+  if (!album) {
+    return null;
+  }
+
+  return (
+    <Card.Cover
+      alt={`Album ${album.name} cover`}
+      resolutions={album.images}
+      {...props}
+    />
+  );
+};
+
 Album.Title = function AlbumTitle({ children, ...props }: TCardTitle) {
   const { album } = useAlbumContext();
 
@@ -37,7 +56,7 @@ Album.Title = function AlbumTitle({ children, ...props }: TCardTitle) {
 
   return (
     <Card.Title {...props}>
-      <span>{album.name}</span>
+      <span className="truncate">{album.name}</span>
       {children}
     </Card.Title>
   );

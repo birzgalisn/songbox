@@ -10,9 +10,7 @@ export default function Group({
     <li className={cn('flex flex-col gap-2', className)} {...props}>
       {head}
 
-      <ol className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {children}
-      </ol>
+      <ol className="grid grid-cols-1 gap-4 lg:grid-cols-2">{children}</ol>
     </li>
   );
 }
@@ -23,9 +21,9 @@ export type TGroup = {
 
 Group.Head = function Head({ children, className = '', ...props }: TGroupHead) {
   return (
-    <h3 className={cn('text-lg font-semibold', className)} {...props}>
+    <h2 className={cn('text-xl', className)} {...props}>
       {children}
-    </h3>
+    </h2>
   );
 };
 

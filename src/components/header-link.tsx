@@ -9,15 +9,17 @@ export default function HeaderLink({
   href,
   children,
   className = '',
+  'aria-label': ariaLabel,
   ...props
 }: { href: string } & ButtonProps) {
   const pathname = usePathname();
   const isLinkActive = pathname === href;
 
   return (
-    <Link href={href}>
+    <Link href={href} aria-label={ariaLabel}>
       <Button
         className={cn({ 'text-blue-600': isLinkActive }, className)}
+        aria-label={ariaLabel}
         {...props}
       >
         {children}

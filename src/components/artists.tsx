@@ -22,11 +22,16 @@ export default function Artists({
 
         return (
           <Artist artist={artist} key={artist.id}>
-            <Artist.Name>
-              <MarkFavorite type="artists" item={artist} />
-            </Artist.Name>
-            <Artist.Genres />
-            <Artist.Popularity />
+            <Artist.Row>
+              <Artist.Cover />
+              <Artist.Col>
+                <Artist.Name>
+                  <MarkFavorite type="artists" item={artist} />
+                </Artist.Name>
+                <Artist.Genres />
+                <Artist.Popularity />
+              </Artist.Col>
+            </Artist.Row>
           </Artist>
         );
       })}

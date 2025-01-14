@@ -314,7 +314,7 @@ export const SearchParamsSchema = z
     limit: z
       .string()
       .optional()
-      .transform((limit) => `${Number(limit) || 9}`),
+      .transform((limit) => `${Number(limit) || 4}`),
     offset: z
       .string()
       .optional()
