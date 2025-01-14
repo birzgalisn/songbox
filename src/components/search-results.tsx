@@ -1,10 +1,20 @@
 'use client';
 
+import { Suspense } from 'react';
 import useSearchResults from '@/hooks/use-search-results';
+import Loading from '@/components/loading';
 import Artists from '@/components/artists';
 import Albums from '@/components/albums';
 
-export default function SearchResults() {
+export default function SearchResultsBoundary() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <SearchResults />
+    </Suspense>
+  );
+}
+
+function SearchResults() {
   const { data: results = {} } = useSearchResults();
 
   if (!results) {
