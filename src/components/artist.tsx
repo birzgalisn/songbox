@@ -56,7 +56,9 @@ Artist.Name = function Name({ children, ...props }: TCardTitle) {
 
   return (
     <Card.Title {...props}>
-      <span>{artist.name}</span>
+      <span title={artist.name} className="line-clamp-1">
+        {artist.name}
+      </span>
       {children}
     </Card.Title>
   );

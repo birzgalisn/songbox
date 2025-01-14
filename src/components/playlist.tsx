@@ -56,7 +56,9 @@ Playlist.Title = function Title({ children, ...props }: TCardTitle) {
 
   return (
     <Card.Title {...props}>
-      <span className="truncate">{playlist.name}</span>
+      <span title={playlist.name} className="line-clamp-1">
+        {playlist.name}
+      </span>
       {children}
     </Card.Title>
   );

@@ -58,7 +58,9 @@ Audiobook.Title = function Title({ children, ...props }: TCardTitle) {
 
   return (
     <Card.Title {...props}>
-      <span className="truncate">{audiobook.name}</span>
+      <span title={audiobook.name} className="line-clamp-1">
+        {audiobook.name}
+      </span>
       {children}
     </Card.Title>
   );
