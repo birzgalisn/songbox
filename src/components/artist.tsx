@@ -47,7 +47,7 @@ Artist.Cover = function Cover({ ...props }) {
   );
 };
 
-Artist.Name = function ArtistName({ children, ...props }: TCardTitle) {
+Artist.Name = function Name({ children, ...props }: TCardTitle) {
   const { artist } = useArtistContext();
 
   if (!artist) {
@@ -62,7 +62,7 @@ Artist.Name = function ArtistName({ children, ...props }: TCardTitle) {
   );
 };
 
-Artist.Genres = function ArtistGenres({ children, ...props }: TCardParagraph) {
+Artist.Genres = function Genres({ children, ...props }: TCardParagraph) {
   const { artist } = useArtistContext();
 
   if (!artist) {
@@ -79,7 +79,7 @@ Artist.Genres = function ArtistGenres({ children, ...props }: TCardParagraph) {
   );
 };
 
-Artist.Popularity = function ArtistPopularity({
+Artist.Popularity = function Popularity({
   children,
   ...props
 }: TCardParagraph) {

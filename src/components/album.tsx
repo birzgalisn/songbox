@@ -31,7 +31,7 @@ export default function Album({
 Album.Row = Card.Row;
 Album.Col = Card.Col;
 
-Album.Cover = function AlbumCover({ ...props }) {
+Album.Cover = function Cover({ ...props }) {
   const { album } = useAlbumContext();
 
   if (!album) {
@@ -47,7 +47,7 @@ Album.Cover = function AlbumCover({ ...props }) {
   );
 };
 
-Album.Title = function AlbumTitle({ children, ...props }: TCardTitle) {
+Album.Title = function Title({ children, ...props }: TCardTitle) {
   const { album } = useAlbumContext();
 
   if (!album) {
@@ -62,7 +62,7 @@ Album.Title = function AlbumTitle({ children, ...props }: TCardTitle) {
   );
 };
 
-Album.Artist = function AlbumArtist({ children, ...props }: TCardParagraph) {
+Album.Artist = function Artist({ children, ...props }: TCardParagraph) {
   const { album } = useAlbumContext();
 
   if (!album || !album.artists) {
@@ -82,7 +82,7 @@ Album.Artist = function AlbumArtist({ children, ...props }: TCardParagraph) {
   );
 };
 
-Album.Release = function AlbumRelease({ children, ...props }: TCardParagraph) {
+Album.Release = function Release({ children, ...props }: TCardParagraph) {
   const { album } = useAlbumContext();
 
   if (!album) {
@@ -97,7 +97,7 @@ Album.Release = function AlbumRelease({ children, ...props }: TCardParagraph) {
   );
 };
 
-Album.TotalTracks = function AlbumTotalTracks({
+Album.TotalTracks = function TotalTracks({
   children,
   ...props
 }: TCardParagraph) {

@@ -5,6 +5,11 @@ import useFavorites from '@/hooks/use-favorites';
 import Loading from '@/components/loading';
 import Albums from '@/components/albums';
 import Artists from '@/components/artists';
+import Playlists from '@/components/playlists';
+import Audiobooks from '@/components/audiobooks';
+import Episodes from '@/components/episodes';
+import Shows from '@/components/shows';
+import Tracks from '@/components/tracks';
 
 function Favorites() {
   const { hasSomeFavorites, data: favorites } = useFavorites();
@@ -15,6 +20,15 @@ function Favorites() {
 
   return (
     <ol className="flex flex-col gap-2">
+      <Albums
+        albums={favorites.albums}
+        head={
+          <Albums.Head>
+            Favorite albums ({favorites.albums?.length})
+          </Albums.Head>
+        }
+      />
+
       <Artists
         artists={favorites.artists}
         head={
@@ -24,12 +38,46 @@ function Favorites() {
         }
       />
 
-      <Albums
-        albums={favorites.albums}
+      <Playlists
+        playlists={favorites.playlists}
         head={
-          <Albums.Head>
-            Favorite albums ({favorites.albums?.length})
-          </Albums.Head>
+          <Playlists.Head>
+            Favorite playlists ({favorites.playlists?.length})
+          </Playlists.Head>
+        }
+      />
+
+      <Tracks
+        tracks={favorites.tracks}
+        head={
+          <Tracks.Head>
+            Favorite tracks ({favorites.tracks?.length})
+          </Tracks.Head>
+        }
+      />
+
+      <Shows
+        shows={favorites.shows}
+        head={
+          <Shows.Head>Favorite shows ({favorites.shows?.length})</Shows.Head>
+        }
+      />
+
+      <Episodes
+        episodes={favorites.episodes}
+        head={
+          <Episodes.Head>
+            Favorite episodes ({favorites.episodes?.length})
+          </Episodes.Head>
+        }
+      />
+
+      <Audiobooks
+        audiobooks={favorites.audiobooks}
+        head={
+          <Audiobooks.Head>
+            Favorite audiobooks ({favorites.audiobooks?.length})
+          </Audiobooks.Head>
         }
       />
     </ol>

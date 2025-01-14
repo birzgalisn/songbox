@@ -21,7 +21,7 @@ export type TGroup = {
 
 Group.Head = function Head({ children, className = '', ...props }: TGroupHead) {
   return (
-    <h2 className={cn('text-xl', className)} {...props}>
+    <h2 className={cn('text-xl font-bold', className)} {...props}>
       {children}
     </h2>
   );

@@ -274,7 +274,7 @@ const SimplifiedAudiobookObjectSchema = z
   })
   .nullable();
 
-export type TSimplifieldAudiobookObject = z.infer<
+export type TSimplifiedAudiobookObject = z.infer<
   typeof SimplifiedAudiobookObjectSchema
 >;
 
