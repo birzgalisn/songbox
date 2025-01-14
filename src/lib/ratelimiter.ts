@@ -1,7 +1,7 @@
 import { Ratelimit } from '@upstash/ratelimit';
 
 import Redis from '@/lib/redis';
-import RatelimitError from '@/errors/rate-limit';
+import RatelimitError from '@/errors/ratelimit';
 
 export default abstract class RatelimiterClient {
   private limiter: Ratelimit;
