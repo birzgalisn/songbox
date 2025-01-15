@@ -31,6 +31,22 @@ export default function Track({
 Track.Row = Card.Row;
 Track.Col = Card.Col;
 
+Track.Cover = function Cover({ ...props }) {
+  const { track } = useTrackContext();
+
+  if (!track) {
+    return null;
+  }
+
+  return (
+    <Card.Cover
+      alt={`Track ${track.name} cover`}
+      resolutions={track.album.images}
+      {...props}
+    />
+  );
+};
+
 Track.Title = function Title({ children, ...props }: TCardTitle) {
   const { track } = useTrackContext();
 
@@ -48,6 +64,26 @@ Track.Title = function Title({ children, ...props }: TCardTitle) {
   );
 };
 
+Track.Artist = function Artist({ children, ...props }: TCardParagraph) {
+  const { track } = useTrackContext();
+
+  if (!track) {
+    return null;
+  }
+
+  const artists = track.artists
+    .filter((artist) => artist !== null && artist !== undefined)
+    .map((artist) => artist.name)
+    .join(', ');
+
+  return (
+    <Card.Paragraph {...props}>
+      <span>Artist: {artists || 'n/a'}</span>
+      {children}
+    </Card.Paragraph>
+  );
+};
+
 Track.Popularity = function Popularity({ children, ...props }: TCardParagraph) {
   const { track } = useTrackContext();
 
@@ -57,7 +93,7 @@ Track.Popularity = function Popularity({ children, ...props }: TCardParagraph) {
 
   return (
     <Card.Paragraph {...props}>
-      <span>{track.popularity}</span>
+      <span>Popularity: {track.popularity}</span>
       {children}
     </Card.Paragraph>
   );

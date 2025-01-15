@@ -22,13 +22,17 @@ export default function Playlists({
 
         return (
           <Track track={track} key={track.id}>
-            <Track.Col>
-              <Track.Title>
-                <MarkFavorite type="tracks" item={track} />
-              </Track.Title>
-              <Track.Popularity />
-              <Track.Disc />
-            </Track.Col>
+            <Track.Row>
+              <Track.Cover />
+              <Track.Col>
+                <Track.Title>
+                  <MarkFavorite type="tracks" item={track} />
+                </Track.Title>
+                <Track.Artist />
+                <Track.Popularity />
+                <Track.Disc />
+              </Track.Col>
+            </Track.Row>
           </Track>
         );
       })}
