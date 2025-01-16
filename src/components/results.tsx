@@ -11,15 +11,15 @@ import Episodes from '@/components/episodes';
 import Shows from '@/components/shows';
 import Tracks from '@/components/tracks';
 
-export default function SearchResultsBoundary() {
+export default function ResultsBoundary() {
   return (
     <Suspense fallback={<Loading />}>
-      <SearchResults />
+      <Results />
     </Suspense>
   );
 }
 
-function SearchResults() {
+function Results() {
   const { data: results = {} } = useSearchResults();
 
   if (!results) {
@@ -35,7 +35,7 @@ function SearchResults() {
   }
 
   return (
-    <ol className="flex flex-col gap-2">
+    <ol className="flex flex-col gap-2 group-has-[[data-pending]]:animate-pulse">
       <Albums
         albums={results.albums?.items}
         head={

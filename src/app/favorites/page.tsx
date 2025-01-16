@@ -19,7 +19,7 @@ function Favorites() {
   }
 
   return (
-    <ol className="flex flex-col gap-2">
+    <ol className="flex flex-col gap-2 group-has-[[data-pending]]:animate-pulse">
       <Albums
         albums={favorites.albums}
         head={

@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import Group from '@/components/group';
 
-export default function Loading({ groups = 2, placeholders = 2 }) {
+export default function Loading({ groups = 2, placeholders = 4 }) {
   const loadingGroups = Array.from({ length: groups }, () => 0);
 
   return (
