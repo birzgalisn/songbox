@@ -1,5 +1,5 @@
 import { Search, Star } from 'lucide-react';
-import HeaderLink from '@/components/header-link';
+import HeaderLinkWithSuspense from '@/components/header-link';
 
 export default function Header() {
   return (
@@ -8,15 +8,19 @@ export default function Header() {
         <h1 className="text-3xl font-semibold text-blue-600">Songbox</h1>
 
         <nav className="flex justify-end">
-          <HeaderLink variant="ghost" href="/" aria-label="Search">
+          <HeaderLinkWithSuspense variant="ghost" href="/" aria-label="Search">
             <Search className="size-5 sm:mr-2" aria-hidden="true" />
             <span className="hidden sm:block">Search</span>
-          </HeaderLink>
+          </HeaderLinkWithSuspense>
 
-          <HeaderLink variant="ghost" href="/favorites" aria-label="Favorites">
+          <HeaderLinkWithSuspense
+            variant="ghost"
+            href="/favorites"
+            aria-label="Favorites"
+          >
             <Star className="size-5 sm:mr-2" aria-hidden="true" />
             <span className="hidden sm:block">Favorites</span>
-          </HeaderLink>
+          </HeaderLinkWithSuspense>
         </nav>
       </div>
     </header>
