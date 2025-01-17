@@ -18,7 +18,13 @@ First, clone the repository:
 git clone git@github.com:birzgalisn/songbox.git
 ```
 
-After cloning the repository, from the root directory, create a new `.env` file by copying `.env.example`:
+Navigate to the recently cloned git directory:
+
+```bash
+cd songbox
+```
+
+Create a new `.env` file within the project directory by copying `.env.example`:
 
 ```bash
 cp .env.example .env
