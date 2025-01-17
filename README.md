@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Songbox
 
-## Getting Started
+Search, discover and keep track of your favorite albums, artists, playlists, tracks, shows, episodes and audiobooks
 
-First, run the development server:
+## Requirements
+
+[**bun**](https://bun.sh) is required to install all the necessary packages.
+
+[**Docker**](https://www.docker.com) must be installed to run the development containers on the target machine.
+
+(_Optional_) Containers can also be started by invoking `make dev` from the repository root directory if `make` is available and the initial setup is done.
+
+## Getting the development environment up and running
+
+First, clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git@github.com:birzgalisn/songbox.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+After cloning the repository, from the root directory, create a new `.env` file by copying `.env.example`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cp .env.example .env
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Afterwards, add your `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` access keys by editing them within `.env`.
 
-## Learn More
+Next, run the following command to install all necessary modules:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+bun i --frozen-lockfile
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Finally, start the development Docker containers:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+docker compose up
+```
 
-## Deploy on Vercel
+Once the containers are running, everything should be set up and ready to go.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Visit [http://songbox.localhost](http://songbox.localhost) to view the application.
