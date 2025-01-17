@@ -9,7 +9,7 @@ export default class SearchManager {
     try {
       await SearchManager.Limiter.enforceSearchLimit();
 
-      return SearchManager.Client.search(searchParams);
+      return await SearchManager.Client.search(searchParams);
     } catch (error) {
       if (error instanceof Error) {
         return { error: { message: error.message } };
