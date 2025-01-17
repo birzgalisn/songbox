@@ -2,6 +2,7 @@
 
 import Form from 'next/form';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import { z } from 'zod';
 import { SearchIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -14,13 +15,15 @@ import searchFields from '@/constants/search-fields';
 
 const SearchSchema = z.object({ q: z.string() });
 
+type TSearchBase = {
+  pathname?: string;
+  searchParams?: URLSearchParams;
+};
+
 function SearchBase({
-  pathname,
-  searchParams,
-}: {
-  pathname: string;
-  searchParams: URLSearchParams;
-}) {
+  pathname = '',
+  searchParams = new URLSearchParams(),
+}: TSearchBase) {
   const inputRef = useCursorFocus();
 
   const [formRef, handleAction] = useBackpressureForm({
@@ -40,13 +43,13 @@ function SearchBase({
       action={handleAction}
       className="relative flex w-full flex-1 flex-shrink-0 rounded shadow-sm"
     >
-      <Label htmlFor="search" className="sr-only">
+      <Label htmlFor={searchFields.query} className="sr-only">
         Search
       </Label>
       <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
       <Input
         ref={inputRef}
-        id="search"
+        id={searchFields.query}
         name={searchFields.query}
         value={search}
         onChange={handleSearch}
@@ -58,16 +61,17 @@ function SearchBase({
   );
 }
 
-export function SearchFallback() {
-  const pathname = '/';
-  const searchParams = new URLSearchParams();
-
-  return <SearchBase {...{ pathname, searchParams }} />;
-}
-
-export default function Search() {
+function SearchHandler() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   return <SearchBase {...{ pathname, searchParams }} />;
+}
+
+export default function SearchLoader() {
+  return (
+    <Suspense fallback={<SearchBase />}>
+      <SearchHandler />
+    </Suspense>
+  );
 }
