@@ -11,15 +11,7 @@ import Episodes from '@/components/episodes';
 import Shows from '@/components/shows';
 import Tracks from '@/components/tracks';
 
-export default function ResultsBoundary() {
-  return (
-    <Suspense fallback={<Loading />}>
-      <Results />
-    </Suspense>
-  );
-}
-
-function Results() {
+function ResultsHandler() {
   const { data: results = {} } = useSearchResults();
 
   if (!results) {
@@ -91,5 +83,13 @@ function Results() {
         }
       />
     </ol>
+  );
+}
+
+export default function ResultsLoader() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <ResultsHandler />
+    </Suspense>
   );
 }

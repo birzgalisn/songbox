@@ -1,7 +1,7 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import getQueryClient from '@/app/get-query-client';
 import getSearchServerOptions from '@/query-options/search/server';
-import ResultsBoundary from '@/components/results';
+import ResultsLoader from '@/components/results';
 import SearchLoader from '@/components/search';
 import FiltersLoader from '@/components/filters';
 
@@ -24,7 +24,7 @@ export default async function Home({
       </div>
 
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <ResultsBoundary />
+        <ResultsLoader />
       </HydrationBoundary>
     </section>
   );
