@@ -1,16 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import LocalFavorites, { TFavoriteData } from '@/lib/local-favorites';
+import LocalFavorites, { TFavoritesData } from '@/lib/local-favorites';
 
 export default function useRemoveFavorites() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: TFavoriteData) => {
+    mutationFn: async (data: TFavoritesData) => {
       const newFavorites = LocalFavorites.removeFavorite(data);
       return Promise.resolve(newFavorites);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [LocalFavorites.storageKey] });
+      queryClient.invalidateQueries({ queryKey: [LocalFavorites.key] });
     },
   });
 }

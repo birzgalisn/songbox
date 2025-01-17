@@ -6,87 +6,81 @@ import {
   TFavoritesValues,
 } from '@/schemas/spotify';
 
-export type TFavoriteData = {
+export type TFavoritesData = {
   type: TFavoritesKeys;
   item: TFavoritesValues;
 };
 
 export default class LocalFavorites {
-  public static readonly storageKey = 'favorites';
+  public static readonly key = 'favorites';
 
   public static getFavorites() {
     if (isServer) {
       return {};
     }
 
-    const rawFavorites = localStorage.getItem(this.storageKey) || '{}';
-
-    return this.safeParseFavorites(rawFavorites);
+    const rawFavorites = localStorage.getItem(LocalFavorites.key);
+    return ParsedFavoritesSchema.safeParse(rawFavorites)?.data || {};
   }
 
-  public static addFavorite({ type, item }: TFavoriteData) {
-    if (isServer) {
-      return null;
-    }
-
-    const favorites = this.getFavorites();
-    const updatedFavorites = this.updateFavoritesList(favorites, type, item);
-
-    this.saveFavorites(updatedFavorites);
-
-    return updatedFavorites;
-  }
-
-  public static removeFavorite({ type, item }: TFavoriteData) {
-    if (isServer) {
-      return null;
-    }
-
-    const favorites = this.getFavorites();
-    const updatedFavorites = this.removeFavoriteFromList(favorites, type, item);
-
-    this.saveFavorites(updatedFavorites);
-    return updatedFavorites;
-  }
-
-  private static safeParseFavorites(rawFavorites: string) {
-    try {
-      return ParsedFavoritesSchema.parse(rawFavorites);
-    } catch {
-      return {};
-    }
-  }
-
-  private static saveFavorites(favorites: TFavorites) {
-    localStorage.setItem(
-      this.storageKey,
-      JSON.stringify(favorites, (_key, value) =>
-        value instanceof Set ? [...value] : value,
-      ),
+  public static addFavorite(data: TFavoritesData) {
+    return LocalFavorites.updateFavorites(
+      data,
+      LocalFavorites.addToFavoritesList,
     );
   }
 
-  private static updateFavoritesList(
-    favorites: TFavorites,
-    type: TFavoritesKeys,
-    item: TFavoritesValues,
+  public static removeFavorite(data: TFavoritesData) {
+    return LocalFavorites.updateFavorites(
+      data,
+      LocalFavorites.removeFromFavoritesList,
+    );
+  }
+
+  private static setFavorites(favorites: TFavorites) {
+    if (isServer) {
+      return {};
+    }
+
+    localStorage.setItem(LocalFavorites.key, JSON.stringify(favorites));
+  }
+
+  private static updateFavorites(
+    data: TFavoritesData,
+    updater:
+      | typeof LocalFavorites.addToFavoritesList
+      | typeof LocalFavorites.removeFromFavoritesList,
   ) {
-    const previousFavorites = favorites[type] || [];
+    if (isServer) {
+      return {};
+    }
+
+    const favorites = LocalFavorites.getFavorites();
+    const updatedFavorites = updater(favorites, data);
+    LocalFavorites.setFavorites(updatedFavorites);
+
+    return updatedFavorites;
+  }
+
+  private static addToFavoritesList(
+    favorites: TFavorites,
+    { type, item }: TFavoritesData,
+  ) {
     return {
       ...favorites,
-      [type]: [...previousFavorites, item],
+      [type]: [...(favorites[type] || []), item],
     } satisfies TFavorites;
   }
 
-  private static removeFavoriteFromList(
+  private static removeFromFavoritesList(
     favorites: TFavorites,
-    type: TFavoritesKeys,
-    item: TFavoritesValues,
+    { type, item }: TFavoritesData,
   ) {
-    const previousFavorites = favorites[type] || [];
     return {
       ...favorites,
-      [type]: previousFavorites.filter((favorite) => favorite?.id !== item?.id),
+      [type]: (favorites[type] || []).filter(
+        (favorite) => favorite?.id !== item?.id,
+      ),
     } satisfies TFavorites;
   }
 }

@@ -12,9 +12,9 @@ import Shows from '@/components/shows';
 import Tracks from '@/components/tracks';
 
 function Favorites() {
-  const { hasSomeFavorites, data: favorites } = useFavorites();
+  const { isLoading, hasSomeFavorites, data: favorites } = useFavorites();
 
-  if (!hasSomeFavorites) {
+  if (!isLoading && !hasSomeFavorites) {
     return <p className="text-center">No favorites to show</p>;
   }
 

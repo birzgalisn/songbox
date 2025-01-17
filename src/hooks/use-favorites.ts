@@ -4,7 +4,7 @@ import LocalFavorites from '@/lib/local-favorites';
 
 export default function useFavorites() {
   const { data = {}, ...rest } = useQuery({
-    queryKey: [LocalFavorites.storageKey],
+    queryKey: [LocalFavorites.key],
     queryFn: async () => {
       const favorites = LocalFavorites.getFavorites();
       return Promise.resolve(favorites);

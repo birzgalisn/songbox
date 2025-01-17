@@ -1,7 +1,7 @@
 import useFavorites from '@/hooks/use-favorites';
-import { TFavoriteData } from '@/lib/local-favorites';
+import { TFavoritesData } from '@/lib/local-favorites';
 
-export default function useIsFavorite({ type, item }: TFavoriteData) {
+export default function useIsFavorite({ type, item }: TFavoritesData) {
   const { hasSomeFavorites, data: favorites } = useFavorites();
 
   if (!hasSomeFavorites) {
