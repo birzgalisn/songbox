@@ -4,21 +4,24 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import searchFields from '@/constants/search-fields';
 import searchTypes from '@/constants/search-types';
 import useUpdateFilters from '@/hooks/use-update-filters';
+import { Suspense } from 'react';
 
-export default function Filters() {
-  const handler = useUpdateFilters();
+type TFiltersBase = { handler?: ReturnType<typeof useUpdateFilters> };
+
+function FiltersBase({ handler }: TFiltersBase) {
+  const dataPending = handler?.isPending ? '' : undefined;
 
   return (
-    <div data-pending={handler.isPending ? '' : undefined}>
+    <div data-pending={dataPending}>
       <ToggleGroup
         type="multiple"
-        {...handler.registerMultiple(searchFields.include)}
+        disabled={Boolean(dataPending)}
+        {...handler?.registerMultiple(searchFields.include)}
       >
         {searchTypes.map((type) => (
           <ToggleGroupItem
             key={`filters-type-${type}`}
             value={type}
-            disabled={handler.isPending}
             className="capitalize group-has-[[data-pending]]:pointer-events-none data-[state=on]:text-blue-600"
           >
             {type}
@@ -26,5 +29,19 @@ export default function Filters() {
         ))}
       </ToggleGroup>
     </div>
+  );
+}
+
+function FiltersHandler() {
+  const handler = useUpdateFilters();
+
+  return <FiltersBase {...{ handler }} />;
+}
+
+export default function FiltersLoader() {
+  return (
+    <Suspense fallback={<FiltersBase />}>
+      <FiltersHandler />
+    </Suspense>
   );
 }
