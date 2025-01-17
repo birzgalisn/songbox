@@ -15,7 +15,7 @@ Search, discover and keep track of your favorite albums, artists, playlists, tra
 First, clone the repository:
 
 ```bash
-git@github.com:birzgalisn/songbox.git
+git clone git@github.com:birzgalisn/songbox.git
 ```
 
 After cloning the repository, from the root directory, create a new `.env` file by copying `.env.example`:
