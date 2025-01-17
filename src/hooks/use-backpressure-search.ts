@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import callAll from '@/lib/call-all';
 
 export default function useBackpressureSearch({
   formRef,
@@ -9,10 +10,10 @@ export default function useBackpressureSearch({
 }) {
   const [search, setSearch] = useState(defaultValue || '');
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-    formRef.current?.requestSubmit();
-  };
+  const handleSubmit = () => formRef.current?.requestSubmit();
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) =>
+    callAll(setSearch, handleSubmit)(event.target.value);
 
   return [search, handleSearch] as const;
 }

@@ -13,10 +13,9 @@ export default function useDebouncedBackpressureSearch({
 }) {
   const [search, setSearch] = useState(defaultValue || '');
 
-  const debouncedSubmit = useDebounce(
-    () => formRef.current?.requestSubmit(),
-    delay,
-  );
+  const handleSubmit = () => formRef.current?.requestSubmit();
+
+  const debouncedSubmit = useDebounce(handleSubmit, delay);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) =>
     callAll(setSearch, debouncedSubmit)(event.target.value);
