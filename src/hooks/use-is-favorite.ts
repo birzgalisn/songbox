@@ -1,16 +1,15 @@
 import useFavorites from '@/hooks/use-favorites';
-import { TFavoritesKeys, TFavoritesValues } from '@/schemas/spotify';
+import { TFavoriteData } from '@/lib/local-favorites';
 
-export default function useIsFavorite({
-  type,
-  item,
-}: {
-  type: TFavoritesKeys;
-  item: TFavoritesValues;
-}) {
-  const { data: favorites } = useFavorites();
+export default function useIsFavorite({ type, item }: TFavoriteData) {
+  const { hasSomeFavorites, data: favorites } = useFavorites();
 
-  const currentFavorites = favorites?.[type] ?? [];
+  if (!hasSomeFavorites) {
+    return false;
+  }
+
+  const currentFavorites = favorites[type] ?? [];
+
   const isFavorite = currentFavorites.some(
     (favorite) => favorite?.id === item?.id,
   );

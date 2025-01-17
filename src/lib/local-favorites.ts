@@ -6,6 +6,11 @@ import {
   TFavoritesValues,
 } from '@/schemas/spotify';
 
+export type TFavoriteData = {
+  type: TFavoritesKeys;
+  item: TFavoritesValues;
+};
+
 export default class LocalFavorites {
   public static readonly storageKey = 'favorites';
 
@@ -19,13 +24,7 @@ export default class LocalFavorites {
     return this.safeParseFavorites(rawFavorites);
   }
 
-  public static addFavorite({
-    type,
-    item,
-  }: {
-    type: TFavoritesKeys;
-    item: TFavoritesValues;
-  }) {
+  public static addFavorite({ type, item }: TFavoriteData) {
     if (isServer) {
       return null;
     }
@@ -38,13 +37,7 @@ export default class LocalFavorites {
     return updatedFavorites;
   }
 
-  public static removeFavorite({
-    type,
-    item,
-  }: {
-    type: TFavoritesKeys;
-    item: TFavoritesValues;
-  }) {
+  public static removeFavorite({ type, item }: TFavoriteData) {
     if (isServer) {
       return null;
     }
