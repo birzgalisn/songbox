@@ -6,7 +6,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button, ButtonProps } from '@/components/ui/button';
 
-type HeaderLinkProps = {
+type THeaderLink = {
   href?: string;
   pathname?: string;
   searchParams?: URLSearchParams;
@@ -14,13 +14,13 @@ type HeaderLinkProps = {
 
 function HeaderLinkBase({
   href,
-  pathname,
-  searchParams,
+  pathname = '',
+  searchParams = new URLSearchParams(),
   children,
   className = '',
   'aria-label': ariaLabel,
   ...props
-}: HeaderLinkProps) {
+}: THeaderLink) {
   const isLinkActive = pathname === href;
 
   return (
@@ -36,14 +36,7 @@ function HeaderLinkBase({
   );
 }
 
-function HeaderLinkFallback(props: HeaderLinkProps) {
-  const pathname = '';
-  const searchParams = new URLSearchParams();
-
-  return <HeaderLinkBase {...{ ...props, pathname, searchParams }} />;
-}
-
-function HeaderLink(props: HeaderLinkProps) {
+function HeaderLink(props: THeaderLink) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -51,10 +44,10 @@ function HeaderLink(props: HeaderLinkProps) {
 }
 
 export default function HeaderLinkWithSuspense(
-  props: Omit<HeaderLinkProps, 'pathname' | 'searchParams'>,
+  props: Omit<THeaderLink, 'pathname' | 'searchParams'>,
 ) {
   return (
-    <Suspense fallback={<HeaderLinkFallback {...props} />}>
+    <Suspense fallback={<HeaderLinkBase {...props} />}>
       <HeaderLink {...props} />
     </Suspense>
   );
