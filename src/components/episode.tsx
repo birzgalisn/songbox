@@ -3,7 +3,7 @@ import { TSimplifiedEpisodeObject } from '@/schemas/spotify';
 import Card, { TCardParagraph, TCardTitle } from '@/components/card';
 
 const EpisodeContext = createContext<{
-  episode: TSimplifiedEpisodeObject;
+  item: TSimplifiedEpisodeObject;
 } | null>(null);
 
 export function useEpisodeContext() {
@@ -17,12 +17,12 @@ export function useEpisodeContext() {
 }
 
 export default function Episode({
-  episode,
+  item,
   children,
   ...props
-}: { episode: TSimplifiedEpisodeObject } & React.HTMLProps<HTMLLIElement>) {
+}: { item: TSimplifiedEpisodeObject } & React.HTMLProps<HTMLLIElement>) {
   return (
-    <EpisodeContext.Provider value={{ episode }}>
+    <EpisodeContext.Provider value={{ item }}>
       <Card {...props}>{children}</Card>
     </EpisodeContext.Provider>
   );
@@ -32,32 +32,32 @@ Episode.Row = Card.Row;
 Episode.Col = Card.Col;
 
 Episode.Cover = function Cover({ ...props }) {
-  const { episode } = useEpisodeContext();
+  const { item } = useEpisodeContext();
 
-  if (!episode) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Cover
-      alt={`Episode ${episode.name} cover`}
-      resolutions={episode.images}
+      alt={`Episode ${item.name} cover`}
+      resolutions={item.images}
       {...props}
     />
   );
 };
 
 Episode.Title = function Title({ children, ...props }: TCardTitle) {
-  const { episode } = useEpisodeContext();
+  const { item } = useEpisodeContext();
 
-  if (!episode) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Title {...props}>
-      <span title={episode.name} className="line-clamp-1">
-        {episode.name}
+      <span title={item.name} className="line-clamp-1">
+        {item.name}
       </span>
       {children}
     </Card.Title>
@@ -68,30 +68,30 @@ Episode.Desription = function Desription({
   children,
   ...props
 }: TCardParagraph) {
-  const { episode } = useEpisodeContext();
+  const { item } = useEpisodeContext();
 
-  if (!episode) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Paragraph {...props}>
-      <span className="line-clamp-3"> {episode.description || 'n/a'}</span>
+      <span className="line-clamp-3"> {item.description || 'n/a'}</span>
       {children}
     </Card.Paragraph>
   );
 };
 
 Episode.Released = function Released({ children, ...props }: TCardParagraph) {
-  const { episode } = useEpisodeContext();
+  const { item } = useEpisodeContext();
 
-  if (!episode) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Paragraph {...props}>
-      <span>Released in: {episode.release_date}</span>
+      <span>Released in: {item.release_date}</span>
       {children}
     </Card.Paragraph>
   );

@@ -406,6 +406,16 @@ export const SearchResponseSchema = z.object({
 
 export type TSearchResponse = z.infer<typeof SearchResponseSchema>;
 
+export type TSearchResponseKeys = keyof TSearchResponse;
+
+export type TSearchResponseItems = NonNullable<
+  TSearchResponse[keyof TSearchResponse]
+>['items'];
+
+export type TSearchResponseItem = NonNullable<TSearchResponseItems>[number];
+
+export type TSearchResponseItemType = NonNullable<TSearchResponseItem>['type'];
+
 export const ErrorSchema = z.object({
   error: z.object({
     status: z.number(),

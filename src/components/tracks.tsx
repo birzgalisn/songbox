@@ -1,32 +1,32 @@
-import { TTracks } from '@/schemas/spotify';
+import { TSearchResponseItems } from '@/schemas/spotify';
 import Group, { TGroup } from '@/components/group';
 import Track from '@/components/track';
 import MarkFavorite from '@/components/mark-favorite';
 
-export default function Playlists({
-  tracks,
+export default function Tracks({
+  items,
   ...props
 }: {
-  tracks: TTracks['items'];
+  items: TSearchResponseItems;
 } & Omit<TGroup, 'children'>) {
-  if (!tracks || !tracks?.length) {
+  if (!items || !items?.length) {
     return null;
   }
 
   return (
     <Group {...props}>
-      {tracks.map((track) => {
-        if (!track) {
+      {items.map((item) => {
+        if (!item || item.type !== 'track') {
           return null;
         }
 
         return (
-          <Track track={track} key={track.id}>
+          <Track key={item.id} item={item}>
             <Track.Row>
               <Track.Cover />
               <Track.Col>
                 <Track.Title>
-                  <MarkFavorite type="tracks" item={track} />
+                  <MarkFavorite type="tracks" item={item} />
                 </Track.Title>
                 <Track.Artist />
                 <Track.Popularity />
@@ -40,4 +40,4 @@ export default function Playlists({
   );
 }
 
-Playlists.Head = Group.Head;
+Tracks.Head = Group.Head;

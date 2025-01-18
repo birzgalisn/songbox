@@ -5,7 +5,7 @@ import ResultsLoader from '@/components/results';
 import SearchLoader from '@/components/search';
 import FiltersLoader from '@/components/filters';
 
-export default async function Home({
+export default async function HomePage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string }>;

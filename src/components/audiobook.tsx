@@ -3,7 +3,7 @@ import { TSimplifiedAudiobookObject } from '@/schemas/spotify';
 import Card, { TCardParagraph, TCardTitle } from '@/components/card';
 
 const AudiobookContext = createContext<{
-  audiobook: TSimplifiedAudiobookObject;
+  item: TSimplifiedAudiobookObject;
 } | null>(null);
 
 export function useAudiobookContext() {
@@ -19,12 +19,12 @@ export function useAudiobookContext() {
 }
 
 export default function Audiobook({
-  audiobook,
+  item,
   children,
   ...props
-}: { audiobook: TSimplifiedAudiobookObject } & React.HTMLProps<HTMLLIElement>) {
+}: { item: TSimplifiedAudiobookObject } & React.HTMLProps<HTMLLIElement>) {
   return (
-    <AudiobookContext.Provider value={{ audiobook }}>
+    <AudiobookContext.Provider value={{ item }}>
       <Card {...props}>{children}</Card>
     </AudiobookContext.Provider>
   );
@@ -34,32 +34,32 @@ Audiobook.Row = Card.Row;
 Audiobook.Col = Card.Col;
 
 Audiobook.Cover = function Cover({ ...props }) {
-  const { audiobook } = useAudiobookContext();
+  const { item } = useAudiobookContext();
 
-  if (!audiobook) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Cover
-      alt={`Audiobook ${audiobook.name} cover`}
-      resolutions={audiobook.images}
+      alt={`Audiobook ${item.name} cover`}
+      resolutions={item.images}
       {...props}
     />
   );
 };
 
 Audiobook.Title = function Title({ children, ...props }: TCardTitle) {
-  const { audiobook } = useAudiobookContext();
+  const { item } = useAudiobookContext();
 
-  if (!audiobook) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Title {...props}>
-      <span title={audiobook.name} className="line-clamp-1">
-        {audiobook.name}
+      <span title={item.name} className="line-clamp-1">
+        {item.name}
       </span>
       {children}
     </Card.Title>
@@ -67,15 +67,15 @@ Audiobook.Title = function Title({ children, ...props }: TCardTitle) {
 };
 
 Audiobook.Chapters = function Chapters({ children, ...props }: TCardParagraph) {
-  const { audiobook } = useAudiobookContext();
+  const { item } = useAudiobookContext();
 
-  if (!audiobook) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Paragraph {...props}>
-      <span>Chapters: {audiobook.total_chapters}</span>
+      <span>Chapters: {item.total_chapters}</span>
       {children}
     </Card.Paragraph>
   );
@@ -85,15 +85,15 @@ Audiobook.Publisher = function Publisher({
   children,
   ...props
 }: TCardParagraph) {
-  const { audiobook } = useAudiobookContext();
+  const { item } = useAudiobookContext();
 
-  if (!audiobook) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Paragraph {...props}>
-      <span>Publisher: {audiobook.publisher}</span>
+      <span>Publisher: {item.publisher}</span>
       {children}
     </Card.Paragraph>
   );

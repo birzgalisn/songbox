@@ -3,7 +3,7 @@ import { TSimplifiedAlbumObject } from '@/schemas/spotify';
 import Card, { TCardParagraph, TCardTitle } from '@/components/card';
 
 const AlbumContext = createContext<{
-  album: TSimplifiedAlbumObject;
+  item: TSimplifiedAlbumObject;
 } | null>(null);
 
 export function useAlbumContext() {
@@ -17,12 +17,12 @@ export function useAlbumContext() {
 }
 
 export default function Album({
-  album,
+  item,
   children,
   ...props
-}: { album: TSimplifiedAlbumObject } & React.HTMLProps<HTMLLIElement>) {
+}: { item: TSimplifiedAlbumObject } & React.HTMLProps<HTMLLIElement>) {
   return (
-    <AlbumContext.Provider value={{ album }}>
+    <AlbumContext.Provider value={{ item }}>
       <Card {...props}>{children}</Card>
     </AlbumContext.Provider>
   );
@@ -32,32 +32,32 @@ Album.Row = Card.Row;
 Album.Col = Card.Col;
 
 Album.Cover = function Cover({ ...props }) {
-  const { album } = useAlbumContext();
+  const { item } = useAlbumContext();
 
-  if (!album) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Cover
-      alt={`Album ${album.name} cover`}
-      resolutions={album.images}
+      alt={`Album ${item.name} cover`}
+      resolutions={item.images}
       {...props}
     />
   );
 };
 
 Album.Title = function Title({ children, ...props }: TCardTitle) {
-  const { album } = useAlbumContext();
+  const { item } = useAlbumContext();
 
-  if (!album) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Title {...props}>
-      <span title={album.name} className="line-clamp-1">
-        {album.name}
+      <span title={item.name} className="line-clamp-1">
+        {item.name}
       </span>
       {children}
     </Card.Title>
@@ -65,13 +65,13 @@ Album.Title = function Title({ children, ...props }: TCardTitle) {
 };
 
 Album.Artist = function Artist({ children, ...props }: TCardParagraph) {
-  const { album } = useAlbumContext();
+  const { item } = useAlbumContext();
 
-  if (!album || !album.artists) {
+  if (!item || !item.artists) {
     return null;
   }
 
-  const artists = album.artists
+  const artists = item.artists
     .filter((artist) => artist !== null && artist !== undefined)
     .map((artist) => artist.name)
     .join(', ');
@@ -85,15 +85,15 @@ Album.Artist = function Artist({ children, ...props }: TCardParagraph) {
 };
 
 Album.Release = function Release({ children, ...props }: TCardParagraph) {
-  const { album } = useAlbumContext();
+  const { item } = useAlbumContext();
 
-  if (!album) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Paragraph {...props}>
-      <span>Released in: {album.release_date}</span>
+      <span>Released in: {item.release_date}</span>
       {children}
     </Card.Paragraph>
   );
@@ -103,15 +103,15 @@ Album.TotalTracks = function TotalTracks({
   children,
   ...props
 }: TCardParagraph) {
-  const { album } = useAlbumContext();
+  const { item } = useAlbumContext();
 
-  if (!album) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Paragraph {...props}>
-      <span>{album.total_tracks} track/s</span>
+      <span>{item.total_tracks} track/s</span>
       {children}
     </Card.Paragraph>
   );

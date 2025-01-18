@@ -1,27 +1,27 @@
-import { TAritsts } from '@/schemas/spotify';
+import { TSearchResponseItems } from '@/schemas/spotify';
 import Group, { TGroup } from '@/components/group';
 import Artist from '@/components/artist';
 import MarkFavorite from '@/components/mark-favorite';
 
 export default function Artists({
-  artists,
+  items,
   ...props
 }: {
-  artists?: TAritsts['items'];
+  items: TSearchResponseItems;
 } & Omit<TGroup, 'children'>) {
-  if (!artists || !artists?.length) {
+  if (!items || !items.length) {
     return null;
   }
 
   return (
     <Group {...props}>
-      {artists.map((artist) => {
-        if (!artist) {
+      {items.map((artist) => {
+        if (!artist || artist.type !== 'artist') {
           return null;
         }
 
         return (
-          <Artist artist={artist} key={artist.id}>
+          <Artist key={artist.id} item={artist}>
             <Artist.Row>
               <Artist.Cover />
               <Artist.Col>

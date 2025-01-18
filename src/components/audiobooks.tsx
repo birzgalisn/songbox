@@ -1,32 +1,32 @@
-import { TAudiobooks } from '@/schemas/spotify';
+import { TSearchResponseItems } from '@/schemas/spotify';
 import Group, { TGroup } from '@/components/group';
 import Audiobook from '@/components/audiobook';
 import MarkFavorite from '@/components/mark-favorite';
 
 export default function Audiobooks({
-  audiobooks,
+  items,
   ...props
 }: {
-  audiobooks: TAudiobooks['items'];
+  items: TSearchResponseItems;
 } & Omit<TGroup, 'children'>) {
-  if (!audiobooks || !audiobooks?.length) {
+  if (!items || !items.length) {
     return null;
   }
 
   return (
     <Group {...props}>
-      {audiobooks.map((audiobook) => {
-        if (!audiobook) {
+      {items.map((item) => {
+        if (!item || item.type !== 'audiobook') {
           return null;
         }
 
         return (
-          <Audiobook audiobook={audiobook} key={audiobook.id}>
+          <Audiobook key={item.id} item={item}>
             <Audiobook.Row>
               <Audiobook.Cover />
               <Audiobook.Col>
                 <Audiobook.Title>
-                  <MarkFavorite type="audiobooks" item={audiobook} />
+                  <MarkFavorite type="audiobooks" item={item} />
                 </Audiobook.Title>
                 <Audiobook.Chapters />
                 <Audiobook.Publisher />

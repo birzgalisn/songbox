@@ -1,32 +1,32 @@
-import { TEpisdoes } from '@/schemas/spotify';
+import { TSearchResponseItems } from '@/schemas/spotify';
 import Group, { TGroup } from '@/components/group';
 import Episode from '@/components/episode';
 import MarkFavorite from '@/components/mark-favorite';
 
 export default function Episodes({
-  episodes,
+  items,
   ...props
 }: {
-  episodes: TEpisdoes['items'];
+  items: TSearchResponseItems;
 } & Omit<TGroup, 'children'>) {
-  if (!episodes || !episodes?.length) {
+  if (!items || !items.length) {
     return null;
   }
 
   return (
     <Group {...props}>
-      {episodes.map((episode) => {
-        if (!episode) {
+      {items.map((item) => {
+        if (!item || item.type !== 'episode') {
           return null;
         }
 
         return (
-          <Episode episode={episode} key={episode.id}>
+          <Episode item={item} key={item.id}>
             <Episode.Row>
               <Episode.Cover />
               <Episode.Col>
                 <Episode.Title>
-                  <MarkFavorite type="episodes" item={episode} />
+                  <MarkFavorite type="episodes" item={item} />
                 </Episode.Title>
                 <Episode.Desription />
                 <Episode.Released />

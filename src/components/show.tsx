@@ -3,7 +3,7 @@ import { TSimplifiedShowObject } from '@/schemas/spotify';
 import Card, { TCardParagraph, TCardTitle } from '@/components/card';
 
 const ShowContext = createContext<{
-  show: TSimplifiedShowObject;
+  item: TSimplifiedShowObject;
 } | null>(null);
 
 export function useShowContext() {
@@ -17,12 +17,12 @@ export function useShowContext() {
 }
 
 export default function Show({
-  show,
+  item,
   children,
   ...props
-}: { show: TSimplifiedShowObject } & React.HTMLProps<HTMLLIElement>) {
+}: { item: TSimplifiedShowObject } & React.HTMLProps<HTMLLIElement>) {
   return (
-    <ShowContext.Provider value={{ show }}>
+    <ShowContext.Provider value={{ item }}>
       <Card {...props}>{children}</Card>
     </ShowContext.Provider>
   );
@@ -32,32 +32,32 @@ Show.Row = Card.Row;
 Show.Col = Card.Col;
 
 Show.Cover = function Cover({ ...props }) {
-  const { show } = useShowContext();
+  const { item } = useShowContext();
 
-  if (!show) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Cover
-      alt={`Show ${show.name} cover`}
-      resolutions={show.images}
+      alt={`Show ${item.name} cover`}
+      resolutions={item.images}
       {...props}
     />
   );
 };
 
 Show.Title = function Title({ children, ...props }: TCardTitle) {
-  const { show } = useShowContext();
+  const { item } = useShowContext();
 
-  if (!show) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Title {...props}>
-      <span title={show.name} className="line-clamp-1">
-        {show.name}
+      <span title={item.name} className="line-clamp-1">
+        {item.name}
       </span>
       {children}
     </Card.Title>
@@ -65,30 +65,30 @@ Show.Title = function Title({ children, ...props }: TCardTitle) {
 };
 
 Show.Desription = function Desription({ children, ...props }: TCardParagraph) {
-  const { show } = useShowContext();
+  const { item } = useShowContext();
 
-  if (!show) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Paragraph {...props}>
-      <span className="line-clamp-3"> {show.description || 'n/a'}</span>
+      <span className="line-clamp-3"> {item.description || 'n/a'}</span>
       {children}
     </Card.Paragraph>
   );
 };
 
 Show.Publisher = function Publisher({ children, ...props }: TCardParagraph) {
-  const { show } = useShowContext();
+  const { item } = useShowContext();
 
-  if (!show) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Paragraph {...props}>
-      <span>Publisher: {show.publisher}</span>
+      <span>Publisher: {item.publisher}</span>
       {children}
     </Card.Paragraph>
   );

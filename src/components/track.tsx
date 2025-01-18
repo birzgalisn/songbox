@@ -3,7 +3,7 @@ import { TTrackObject } from '@/schemas/spotify';
 import Card, { TCardParagraph, TCardTitle } from '@/components/card';
 
 const TrackContext = createContext<{
-  track: TTrackObject;
+  item: TTrackObject;
 } | null>(null);
 
 export function useTrackContext() {
@@ -17,12 +17,12 @@ export function useTrackContext() {
 }
 
 export default function Track({
-  track,
+  item,
   children,
   ...props
-}: { track: TTrackObject } & React.HTMLProps<HTMLLIElement>) {
+}: { item: TTrackObject } & React.HTMLProps<HTMLLIElement>) {
   return (
-    <TrackContext.Provider value={{ track }}>
+    <TrackContext.Provider value={{ item }}>
       <Card {...props}>{children}</Card>
     </TrackContext.Provider>
   );
@@ -32,32 +32,32 @@ Track.Row = Card.Row;
 Track.Col = Card.Col;
 
 Track.Cover = function Cover({ ...props }) {
-  const { track } = useTrackContext();
+  const { item } = useTrackContext();
 
-  if (!track) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Cover
-      alt={`Track ${track.name} cover`}
-      resolutions={track.album.images}
+      alt={`Track ${item.name} cover`}
+      resolutions={item.album.images}
       {...props}
     />
   );
 };
 
 Track.Title = function Title({ children, ...props }: TCardTitle) {
-  const { track } = useTrackContext();
+  const { item } = useTrackContext();
 
-  if (!track) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Title {...props}>
-      <span title={track.name} className="line-clamp-1">
-        {track.name}
+      <span title={item.name} className="line-clamp-1">
+        {item.name}
       </span>
       {children}
     </Card.Title>
@@ -65,13 +65,13 @@ Track.Title = function Title({ children, ...props }: TCardTitle) {
 };
 
 Track.Artist = function Artist({ children, ...props }: TCardParagraph) {
-  const { track } = useTrackContext();
+  const { item } = useTrackContext();
 
-  if (!track) {
+  if (!item) {
     return null;
   }
 
-  const artists = track.artists
+  const artists = item.artists
     .filter((artist) => artist !== null && artist !== undefined)
     .map((artist) => artist.name)
     .join(', ');
@@ -85,30 +85,30 @@ Track.Artist = function Artist({ children, ...props }: TCardParagraph) {
 };
 
 Track.Popularity = function Popularity({ children, ...props }: TCardParagraph) {
-  const { track } = useTrackContext();
+  const { item } = useTrackContext();
 
-  if (!track) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Paragraph {...props}>
-      <span>Popularity: {track.popularity}</span>
+      <span>Popularity: {item.popularity}</span>
       {children}
     </Card.Paragraph>
   );
 };
 
 Track.Disc = function Disc({ children, ...props }: TCardParagraph) {
-  const { track } = useTrackContext();
+  const { item } = useTrackContext();
 
-  if (!track) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Paragraph {...props}>
-      <span>Disc No.: {track.disc_number}</span>
+      <span>Disc No.: {item.disc_number}</span>
       {children}
     </Card.Paragraph>
   );

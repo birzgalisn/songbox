@@ -3,7 +3,7 @@ import { TSimplifiedPlaylistObject } from '@/schemas/spotify';
 import Card, { TCardParagraph, TCardTitle } from '@/components/card';
 
 const PlaylistContext = createContext<{
-  playlist: TSimplifiedPlaylistObject;
+  item: TSimplifiedPlaylistObject;
 } | null>(null);
 
 export function usePlaylistContext() {
@@ -17,12 +17,12 @@ export function usePlaylistContext() {
 }
 
 export default function Playlist({
-  playlist,
+  item,
   children,
   ...props
-}: { playlist: TSimplifiedPlaylistObject } & React.HTMLProps<HTMLLIElement>) {
+}: { item: TSimplifiedPlaylistObject } & React.HTMLProps<HTMLLIElement>) {
   return (
-    <PlaylistContext.Provider value={{ playlist }}>
+    <PlaylistContext.Provider value={{ item }}>
       <Card {...props}>{children}</Card>
     </PlaylistContext.Provider>
   );
@@ -32,32 +32,32 @@ Playlist.Row = Card.Row;
 Playlist.Col = Card.Col;
 
 Playlist.Cover = function Cover({ ...props }) {
-  const { playlist } = usePlaylistContext();
+  const { item } = usePlaylistContext();
 
-  if (!playlist) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Cover
-      alt={`Playlist ${playlist.name} cover`}
-      resolutions={playlist.images}
+      alt={`Playlist ${item.name} cover`}
+      resolutions={item.images}
       {...props}
     />
   );
 };
 
 Playlist.Title = function Title({ children, ...props }: TCardTitle) {
-  const { playlist } = usePlaylistContext();
+  const { item } = usePlaylistContext();
 
-  if (!playlist) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Title {...props}>
-      <span title={playlist.name} className="line-clamp-1">
-        {playlist.name}
+      <span title={item.name} className="line-clamp-1">
+        {item.name}
       </span>
       {children}
     </Card.Title>
@@ -68,15 +68,15 @@ Playlist.Desription = function Desription({
   children,
   ...props
 }: TCardParagraph) {
-  const { playlist } = usePlaylistContext();
+  const { item } = usePlaylistContext();
 
-  if (!playlist) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Paragraph {...props}>
-      <span>{playlist.description || 'n/a'}</span>
+      <span>{item.description || 'n/a'}</span>
       {children}
     </Card.Paragraph>
   );
@@ -86,15 +86,15 @@ Playlist.TotalTracks = function TotalTracks({
   children,
   ...props
 }: TCardParagraph) {
-  const { playlist } = usePlaylistContext();
+  const { item } = usePlaylistContext();
 
-  if (!playlist) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Paragraph {...props}>
-      <span>{playlist.tracks.total} track/s</span>
+      <span>{item.tracks.total} track/s</span>
       {children}
     </Card.Paragraph>
   );

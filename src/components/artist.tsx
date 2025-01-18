@@ -3,7 +3,7 @@ import { TArtist } from '@/schemas/spotify';
 import Card, { TCardParagraph, TCardTitle } from '@/components/card';
 
 const ArtistContext = createContext<{
-  artist: TArtist;
+  item: TArtist;
 } | null>(null);
 
 export function useArtistContext() {
@@ -17,12 +17,12 @@ export function useArtistContext() {
 }
 
 export default function Artist({
-  artist,
+  item,
   children,
   ...props
-}: { artist: TArtist } & React.HTMLProps<HTMLLIElement>) {
+}: { item: TArtist } & React.HTMLProps<HTMLLIElement>) {
   return (
-    <ArtistContext.Provider value={{ artist }}>
+    <ArtistContext.Provider value={{ item }}>
       <Card {...props}>{children}</Card>
     </ArtistContext.Provider>
   );
@@ -32,32 +32,32 @@ Artist.Row = Card.Row;
 Artist.Col = Card.Col;
 
 Artist.Cover = function Cover({ ...props }) {
-  const { artist } = useArtistContext();
+  const { item } = useArtistContext();
 
-  if (!artist) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Cover
-      alt={`Artist ${artist.name} cover`}
-      resolutions={artist.images}
+      alt={`Artist ${item.name} cover`}
+      resolutions={item.images}
       {...props}
     />
   );
 };
 
 Artist.Name = function Name({ children, ...props }: TCardTitle) {
-  const { artist } = useArtistContext();
+  const { item } = useArtistContext();
 
-  if (!artist) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Title {...props}>
-      <span title={artist.name} className="line-clamp-1">
-        {artist.name}
+      <span title={item.name} className="line-clamp-1">
+        {item.name}
       </span>
       {children}
     </Card.Title>
@@ -65,13 +65,13 @@ Artist.Name = function Name({ children, ...props }: TCardTitle) {
 };
 
 Artist.Genres = function Genres({ children, ...props }: TCardParagraph) {
-  const { artist } = useArtistContext();
+  const { item } = useArtistContext();
 
-  if (!artist) {
+  if (!item) {
     return null;
   }
 
-  const genres = artist.genres.join(', ');
+  const genres = item.genres.join(', ');
 
   return (
     <Card.Paragraph {...props}>
@@ -85,15 +85,15 @@ Artist.Popularity = function Popularity({
   children,
   ...props
 }: TCardParagraph) {
-  const { artist } = useArtistContext();
+  const { item } = useArtistContext();
 
-  if (!artist) {
+  if (!item) {
     return null;
   }
 
   return (
     <Card.Paragraph {...props}>
-      <span>Popularity: {artist.popularity}</span>
+      <span>Popularity: {item.popularity}</span>
       {children}
     </Card.Paragraph>
   );
