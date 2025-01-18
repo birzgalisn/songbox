@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import Group from '@/components/group';
 
-export default function Loading({ groups = 2, placeholders = 4 }) {
+export default function Loading({ groups = 2, placeholders = 4 }: TLoading) {
   const loadingGroups = Array.from({ length: groups }, () => 0);
 
   return (
@@ -35,3 +35,5 @@ export default function Loading({ groups = 2, placeholders = 4 }) {
     </ol>
   );
 }
+
+export type TLoading = { groups?: number; placeholders?: number };

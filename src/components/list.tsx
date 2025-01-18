@@ -1,13 +1,8 @@
+import dynamic, { DynamicOptions, Loader } from 'next/dynamic';
 import { cn } from '@/lib/utils';
 import { TSearchResponseItems } from '@/schemas/spotify';
 import Group, { TGroup } from '@/components/group';
-import Albums from '@/components/albums';
-import Artists from '@/components/artists';
-import Playlists from '@/components/playlists';
-import Tracks from '@/components/tracks';
-import Shows from '@/components/shows';
-import Episodes from '@/components/episodes';
-import Audiobooks from '@/components/audiobooks';
+import Loading from '@/components/loading';
 
 export default function List({ children, className = '', ...props }: TList) {
   return (
@@ -25,14 +20,20 @@ export default function List({ children, className = '', ...props }: TList) {
 
 export type TList = React.HTMLAttributes<HTMLOListElement>;
 
+function lazy<T>(dynamicOptions: DynamicOptions<T> | Loader<T>) {
+  return dynamic(dynamicOptions, {
+    loading: () => <Loading groups={1} placeholders={2} />,
+  });
+}
+
 const listComponentMap = Object.freeze({
-  albums: Albums,
-  artists: Artists,
-  playlists: Playlists,
-  tracks: Tracks,
-  shows: Shows,
-  episodes: Episodes,
-  audiobooks: Audiobooks,
+  albums: lazy(() => import('@/components/albums')),
+  artists: lazy(() => import('@/components/artists')),
+  playlists: lazy(() => import('@/components/playlists')),
+  tracks: lazy(() => import('@/components/tracks')),
+  shows: lazy(() => import('@/components/shows')),
+  episodes: lazy(() => import('@/components/episodes')),
+  audiobooks: lazy(() => import('@/components/audiobooks')),
 } as const);
 
 export type TListComponentKey = keyof typeof listComponentMap;
@@ -45,7 +46,9 @@ function ListGroup({ group, ...props }: TListGroup) {
     return null;
   }
 
-  return listComponentMap[group](props);
+  const Component = listComponentMap[group];
+
+  return <Component {...props} />;
 }
 
 ListGroup.Head = Group.Head;
