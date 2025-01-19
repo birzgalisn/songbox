@@ -1,4 +1,4 @@
-const iso3166alpha2Codes = Object.freeze([
+const ISO_3166_ALPHA_2_CODES = Object.freeze([
   'AA',
   'AB',
   'AC',
@@ -677,6 +677,6 @@ const iso3166alpha2Codes = Object.freeze([
   'ZZ',
 ] as const);
 
-export type TIso3166Alpha2Code = (typeof iso3166alpha2Codes)[number];
+export type TIso3166Alpha2Code = (typeof ISO_3166_ALPHA_2_CODES)[number];
 
-export default iso3166alpha2Codes;
+export default ISO_3166_ALPHA_2_CODES;

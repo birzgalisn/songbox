@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
-import iso3166alpha2Codes from '@/constants/iso-3166-alpha-2-codes';
-import searchTypes, { TSearchType } from '@/constants/search-types';
+import ISO_3166_ALPHA_2_CODES from '@/constants/iso-3166-alpha-2-codes';
+import SEARCH_TYPES, { TSearchType } from '@/constants/search-types';
+import SEARCH_DEFAULTS from '@/constants/search-defaults';
 
 const nullableArray = <T>(schema: z.ZodType<T>) =>
   z
@@ -29,7 +30,9 @@ const RestrictionsSchema = z
 
 export type TRestrictions = z.infer<typeof RestrictionsSchema>;
 
-const AvailableMarketsSchema = z.array(z.enum(iso3166alpha2Codes)).optional();
+const AvailableMarketsSchema = z
+  .array(z.enum(ISO_3166_ALPHA_2_CODES))
+  .optional();
 
 export type TAvailableMarkets = z.infer<typeof AvailableMarketsSchema>;
 
@@ -284,10 +287,10 @@ export const ClientCredentialsSchema = z
     token_type: z.string(),
     expires_in: z.number(),
   })
-  .transform(({ expires_in, ...data }) => ({
-    ...data,
-    expires_at: Date.now() + expires_in * 1000,
-  }));
+  .transform(({ expires_in, ...data }) => {
+    const expires_at = Date.now() + expires_in * 1000;
+    return { ...data, expires_at };
+  });
 
 export type TClientCredentials = z.infer<typeof ClientCredentialsSchema>;
 
@@ -301,24 +304,24 @@ export const SearchParamsSchema = z
         (type = '') =>
           type
             .split(',')
-            .filter((value) => searchTypes.includes(value as TSearchType))
-            .join(',') || searchTypes.join(','),
+            .filter((value) => SEARCH_TYPES.includes(value as TSearchType))
+            .join(',') || SEARCH_DEFAULTS.type,
       ),
     market: z
       .string()
       .optional()
       .transform(
         (market = '') =>
-          `${iso3166alpha2Codes.find((iso) => iso === market) || 'US'}`,
+          `${ISO_3166_ALPHA_2_CODES.find((iso) => iso === market) || SEARCH_DEFAULTS.market}`,
       ),
     limit: z
       .string()
       .optional()
-      .transform((limit) => `${Number(limit) || 4}`),
+      .transform((limit) => `${Number(limit) || SEARCH_DEFAULTS.limit}`),
     offset: z
       .string()
       .optional()
-      .transform((offset) => `${Number(offset) || 0}`),
+      .transform((offset) => `${Number(offset) || SEARCH_DEFAULTS.offset}`),
     include_external: z.string().optional(),
   })
   .transform(({ include_external, ...data }) => ({

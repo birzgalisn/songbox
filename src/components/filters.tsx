@@ -1,8 +1,8 @@
 'use client';
 
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import searchFields from '@/constants/search-fields';
-import searchTypes from '@/constants/search-types';
+import SEARCH_FIELDS from '@/constants/search-fields';
+import SEARCH_TYPES from '@/constants/search-types';
 import useUpdateFilters from '@/hooks/use-update-filters';
 import { Suspense } from 'react';
 
@@ -12,13 +12,13 @@ function FiltersBase({ handler }: TFiltersBase) {
   const dataPending = handler?.isPending ? '' : undefined;
 
   return (
-    <div data-pending={dataPending}>
+    <div data-pending={dataPending} className="py-1">
       <ToggleGroup
         type="multiple"
         disabled={Boolean(dataPending)}
-        {...handler?.registerMultiple(searchFields.include)}
+        {...handler?.registerMultiple(SEARCH_FIELDS.type)}
       >
-        {searchTypes.map((type) => (
+        {SEARCH_TYPES.map((type) => (
           <ToggleGroupItem
             key={`filters-type-${type}`}
             value={type}

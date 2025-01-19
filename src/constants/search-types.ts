@@ -1,4 +1,4 @@
-const searchTypes = Object.freeze([
+const SEARCH_TYPES = Object.freeze([
   'album',
   'artist',
   'playlist',
@@ -8,6 +8,6 @@ const searchTypes = Object.freeze([
   'audiobook',
 ] as const);
 
-export type TSearchType = (typeof searchTypes)[number];
+export type TSearchType = (typeof SEARCH_TYPES)[number];
 
-export default searchTypes;
+export default SEARCH_TYPES;

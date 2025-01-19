@@ -1,6 +1,9 @@
-const searchFields = Object.freeze({
-  query: 'q',
-  include: 'type',
+const SEARCH_FIELDS = Object.freeze({
+  q: 'q',
+  type: 'type',
+  market: 'market',
+  limit: 'limit',
+  offset: 'offset',
 } as const);
 
-export default searchFields;
+export default SEARCH_FIELDS;

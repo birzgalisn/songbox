@@ -1,12 +1,15 @@
-import searchFields from '@/constants/search-fields';
+import SEARCH_FIELDS from '@/constants/search-fields';
+import getSafeSearchParam from '@/lib/get-safe-search-param';
 
 export default class SearchQueryKey {
   private static readonly key = 'search';
 
   public static getQueryKey(searchParams: URLSearchParams) {
-    const q = searchParams.get(searchFields.query) ?? '';
-    const type = searchParams.get(searchFields.include) ?? '';
+    const q = getSafeSearchParam(searchParams, SEARCH_FIELDS.q);
+    const type = getSafeSearchParam(searchParams, SEARCH_FIELDS.type);
+    const limit = getSafeSearchParam(searchParams, SEARCH_FIELDS.limit);
+    const offset = getSafeSearchParam(searchParams, SEARCH_FIELDS.offset);
 
-    return [SearchQueryKey.key, q, type] as const;
+    return [SearchQueryKey.key, q, type, limit, offset] as const;
   }
 }
