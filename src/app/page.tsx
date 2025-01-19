@@ -18,7 +18,7 @@ export default async function HomePage({
 
   return (
     <section className="flex flex-col gap-8">
-      <div className="flex flex-col gap-4">
+      <div className="sticky top-4 z-10 flex flex-col bg-gray-100 before:absolute before:inset-x-0 before:-top-8 before:h-8 before:bg-gray-100">
         <SearchLoader />
         <FiltersLoader />
       </div>
