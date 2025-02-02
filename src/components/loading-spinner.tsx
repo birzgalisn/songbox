@@ -6,7 +6,7 @@ export default function LoadingSpinner() {
   return (
     <div
       data-pending={pending ? '' : undefined}
-      className="absolute right-3 top-1/2 -translate-y-1/2 transition-opacity duration-300"
+      className="absolute top-1/2 right-3 -translate-y-1/2 transition-opacity duration-300"
     >
       <svg className="h-5 w-5" viewBox="0 0 100 100">
         <circle

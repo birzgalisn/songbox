@@ -46,7 +46,7 @@ function SearchBase({
       action={handleAction}
       className="relative flex w-full flex-1 flex-shrink-0 rounded shadow-sm"
     >
-      <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+      <SearchIcon className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
       <Label htmlFor={SEARCH_FIELDS.q} className="sr-only">
         Search
       </Label>
