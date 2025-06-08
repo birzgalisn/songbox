@@ -58,7 +58,7 @@ services:
       - --api.dashboard=true
       - --entrypoints.web.address=:80
       - --providers.docker=true
-      - --providers.docker.network=proxy
+      - --providers.docker.network=${PROJECT}_proxy
       - --providers.docker.exposedbydefault=false
     ports:
       - 80:80
